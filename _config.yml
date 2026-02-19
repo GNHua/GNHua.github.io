@@ -1,0 +1,28 @@
+title: GNHua's Blog
+description: A bilingual blog about tech and life
+url: "https://GNHua.github.io"
+baseurl: ""
+
+theme: minima
+
+plugins:
+  - jekyll-feed
+
+# Build settings
+markdown: kramdown
+permalink: /:year/:month/:day/:title/
+
+# Default front matter
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "GNHua"
+
+# Exclude from build
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
