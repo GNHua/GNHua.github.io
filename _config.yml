@@ -5,6 +5,8 @@ baseurl: ""
 
 theme: minima
 
+github_username: GNHua
+
 plugins:
   - jekyll-feed
 
