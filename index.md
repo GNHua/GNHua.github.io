@@ -1,4 +1,4 @@
 ---
-layout: home
+layout: home-bilingual
 title: Home
 ---

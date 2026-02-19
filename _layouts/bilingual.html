@@ -56,12 +56,14 @@ layout: default
     document.getElementById('btn-' + lang).classList.add('active');
     document.getElementById('post-title').textContent =
       document.getElementById('content-' + lang).getAttribute('data-title');
+
+    localStorage.setItem('blog-lang', lang);
     history.replaceState(null, '', '?lang=' + lang);
   }
 
   (function() {
     var params = new URLSearchParams(window.location.search);
-    var lang = params.get('lang');
+    var lang = params.get('lang') || localStorage.getItem('blog-lang');
     if (lang !== 'en' && lang !== 'zh') {
       lang = (navigator.language || '').startsWith('zh') ? 'zh' : 'en';
     }

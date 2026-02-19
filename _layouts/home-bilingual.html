@@ -1,0 +1,78 @@
+---
+layout: default
+---
+
+<style>
+  .lang-switch {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .lang-switch button {
+    padding: 6px 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #f5f5f5;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .lang-switch button.active {
+    background: #333;
+    color: #fff;
+    border-color: #333;
+  }
+  .post-list .post-link-en,
+  .post-list .post-link-zh { display: none; }
+  .post-list .post-link-en.active,
+  .post-list .post-link-zh.active { display: inline; }
+</style>
+
+<div class="home">
+  <div class="lang-switch">
+    <button onclick="switchLang('en')" id="btn-en">English</button>
+    <button onclick="switchLang('zh')" id="btn-zh">中文</button>
+  </div>
+
+  <ul class="post-list">
+    {% for post in site.posts %}
+    <li>
+      <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+      <h3>
+        <a class="post-link post-link-en" href="{{ post.url | relative_url }}?lang=en">
+          {{ post.title_en | default: post.title }}
+        </a>
+        <a class="post-link post-link-zh" href="{{ post.url | relative_url }}?lang=zh">
+          {{ post.title_zh | default: post.title }}
+        </a>
+      </h3>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<script>
+  function switchLang(lang) {
+    document.querySelectorAll('.lang-switch button').forEach(function(el) {
+      el.classList.remove('active');
+    });
+    document.getElementById('btn-' + lang).classList.add('active');
+
+    document.querySelectorAll('.post-link-en').forEach(function(el) {
+      el.classList.toggle('active', lang === 'en');
+    });
+    document.querySelectorAll('.post-link-zh').forEach(function(el) {
+      el.classList.toggle('active', lang === 'zh');
+    });
+
+    localStorage.setItem('blog-lang', lang);
+  }
+
+  (function() {
+    var params = new URLSearchParams(window.location.search);
+    var lang = params.get('lang') || localStorage.getItem('blog-lang');
+    if (lang !== 'en' && lang !== 'zh') {
+      lang = (navigator.language || '').startsWith('zh') ? 'zh' : 'en';
+    }
+    switchLang(lang);
+  })();
+</script>
