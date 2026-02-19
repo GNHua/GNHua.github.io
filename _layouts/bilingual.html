@@ -1,0 +1,70 @@
+---
+layout: default
+---
+
+<style>
+  .lang-switch {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .lang-switch button {
+    padding: 6px 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #f5f5f5;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .lang-switch button.active {
+    background: #333;
+    color: #fff;
+    border-color: #333;
+  }
+  .lang-content { display: none; }
+  .lang-content.active { display: block; }
+</style>
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline" id="post-title"></h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+        {{ page.date | date: "%b %-d, %Y" }}
+      </time>
+    </p>
+    <div class="lang-switch">
+      <button onclick="switchLang('en')" id="btn-en">English</button>
+      <button onclick="switchLang('zh')" id="btn-zh">中文</button>
+    </div>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    {{ content }}
+  </div>
+</article>
+
+<script>
+  function switchLang(lang) {
+    document.querySelectorAll('.lang-content').forEach(function(el) {
+      el.classList.remove('active');
+    });
+    document.querySelectorAll('.lang-switch button').forEach(function(el) {
+      el.classList.remove('active');
+    });
+    document.getElementById('content-' + lang).classList.add('active');
+    document.getElementById('btn-' + lang).classList.add('active');
+    document.getElementById('post-title').textContent =
+      document.getElementById('content-' + lang).getAttribute('data-title');
+    history.replaceState(null, '', '?lang=' + lang);
+  }
+
+  (function() {
+    var params = new URLSearchParams(window.location.search);
+    var lang = params.get('lang');
+    if (lang !== 'en' && lang !== 'zh') {
+      lang = (navigator.language || '').startsWith('zh') ? 'zh' : 'en';
+    }
+    switchLang(lang);
+  })();
+</script>
